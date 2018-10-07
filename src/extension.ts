@@ -13,8 +13,10 @@ import {
   TextDocumentContentChangeEvent,
   TextEditorSelectionChangeEvent,
   Selection,
-  WorkspaceConfiguration
+  WorkspaceConfiguration,
+  WorkspaceFolder
 } from 'vscode';
+
 import Variable from './lib/variables/variable';
 import ColorUtil, { IDecoration, DocumentLine, LineExtraction } from './lib/util/color-util';
 import Queue from './lib/queue';
@@ -490,6 +492,13 @@ function colorizeVisibleTextEditors() {
 
 export function activate(context: ExtensionContext) {
   config = readConfiguration();
+
+  // launch.json configuration
+  const config2 = workspace.getConfiguration('workbench');
+  // retrieve values
+  let colorTheme = config2.colorTheme; // get the name of the colorTheme
+  // Now need to fetch extension to get the colors ?
+
   ColorUtil.setupColorsExtractors(config.colorizedColors);
   VariablesManager.setupVariablesExtractors(config.colorizedVariables);
   q.push(async cb => {
